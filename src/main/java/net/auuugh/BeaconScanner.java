@@ -1,0 +1,73 @@
+package net.auuugh;
+
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+public class BeaconScanner {
+    public static void register() {
+        UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
+            if(world.isClient()) return ActionResult.PASS;
+
+            //Get block position, what type of block, and block entity data
+            BlockPos pos = hitResult.getBlockPos();
+            BlockState state = world.getBlockState(pos);
+            BlockEntity entity = world.getBlockEntity(pos);
+
+            //Player & Block check
+            if(player.isSneaking() && state.isOf(Blocks.BEACON)) {
+                pyramidScanner(world, pos);
+                System.out.println("Beacon has been right clicked at " + pos + "!");
+            }
+            return ActionResult.PASS;
+        });
+    }
+
+    static void pyramidScanner(World world, BlockPos beaconPos) {
+        System.out.println("=== NEW SCAN === " + beaconPos);
+        //vars
+        int x = beaconPos.getX();
+        int y = beaconPos.getY();
+        int z = beaconPos.getZ();
+        int radius;
+        int layerY;
+        int xCoord;
+        int zCoord;
+
+        BlockState blockType = world.getBlockState(beaconPos.down());
+        System.out.println(blockType);
+
+
+        layerLoop:
+        for(int layer = 1; layer <= 4; layer++) {
+            //temp
+            radius = layer;
+            layerY = y - layer;
+
+            //main loop for checking pyramid grid
+            checkBlock:
+            for (int checkx = -radius; checkx <= radius; checkx++) {
+                xCoord = x + checkx;
+                for (int checkz = -radius; checkz <= radius; checkz++) {
+                    //update z coord, position, and block
+                    zCoord = z + checkz;
+                    BlockPos pos = new BlockPos(xCoord, layerY, zCoord);
+                    BlockState state = world.getBlockState(pos);
+                    //System.out.println(state.getBlock());
+                    //System.out.println("Radius = " + radius);
+
+                    //ends if invalid block is found
+                    if (!state.isIn(BlockTags.BEACON_BASE_BLOCKS)) {
+                        System.out.println("Non Beacon block found at " + pos + ": " + state.getBlock());
+                        break layerLoop;
+                    }
+                }
+            }
+        }
+    }
+}
