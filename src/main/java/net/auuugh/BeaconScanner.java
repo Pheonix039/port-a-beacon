@@ -5,9 +5,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.text.Text;
 
 public class BeaconScanner {
     public static void register() {
@@ -29,24 +31,23 @@ public class BeaconScanner {
     }
 
     static void pyramidScanner(World world, BlockPos beaconPos) {
-        System.out.println("=== NEW SCAN === " + beaconPos);
+        System.out.println("New Beacon scan at " + beaconPos);
         //vars
         int x = beaconPos.getX();
         int y = beaconPos.getY();
         int z = beaconPos.getZ();
-        int radius;
+        int radius = 0;
         int layerY;
         int xCoord;
         int zCoord;
 
         BlockState blockType = world.getBlockState(beaconPos.down());
-        System.out.println(blockType);
+        //System.out.println(blockType);
 
 
         layerLoop:
         for(int layer = 1; layer <= 4; layer++) {
             //temp
-            radius = layer;
             layerY = y - layer;
 
             //main loop for checking pyramid grid
@@ -61,13 +62,19 @@ public class BeaconScanner {
                     //System.out.println(state.getBlock());
                     //System.out.println("Radius = " + radius);
 
-                    //ends if invalid block is found
-                    if (!state.isIn(BlockTags.BEACON_BASE_BLOCKS)) {
+                    //ends if any block found doesn't match blockType
+                    if (state != blockType) {
                         System.out.println("Non Beacon block found at " + pos + ": " + state.getBlock());
+                        System.out.println("Block expected: " + blockType);
+
+                        Text errorMsg = Text.literal("Non Beacon block found at " + pos + ": " + state.getBlock() + ". Expected " + blockType);
                         break layerLoop;
                     }
+                    radius = layer;
                 }
             }
         }
+        System.out.println("Total layers in beacon: " + radius);
+        System.out.println("Beacon block type: " + blockType);
     }
 }
