@@ -23,14 +23,14 @@ public class BeaconScanner {
 
             //Player & Block check
             if(player.isSneaking() && state.isOf(Blocks.BEACON)) {
-                pyramidScanner(world, pos);
+                pyramidScanner(world, pos, (ServerPlayerEntity) player);
                 System.out.println("Beacon has been right clicked at " + pos + "!");
             }
             return ActionResult.PASS;
         });
     }
 
-    static void pyramidScanner(World world, BlockPos beaconPos) {
+    static void pyramidScanner(World world, BlockPos beaconPos, ServerPlayerEntity player) {
         System.out.println("New Beacon scan at " + beaconPos);
         //vars
         int x = beaconPos.getX();
@@ -67,7 +67,8 @@ public class BeaconScanner {
                         System.out.println("Non Beacon block found at " + pos + ": " + state.getBlock());
                         System.out.println("Block expected: " + blockType);
 
-                        Text errorMsg = Text.literal("Non Beacon block found at " + pos + ": " + state.getBlock() + ". Expected " + blockType);
+                        Text errorMsg = Text.literal("Non Beacon block found at " + pos + ": " + state.getBlock() + ". \nExpected " + blockType);
+                        player.sendMessage(errorMsg);
                         break layerLoop;
                     }
                     radius = layer;
@@ -76,5 +77,7 @@ public class BeaconScanner {
         }
         System.out.println("Total layers in beacon: " + radius);
         System.out.println("Beacon block type: " + blockType);
+
+
     }
 }
