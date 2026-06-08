@@ -4,6 +4,8 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
@@ -19,7 +21,7 @@ public class BeaconScanner {
             //Get block position, what type of block, and block entity data
             BlockPos pos = hitResult.getBlockPos();
             BlockState state = world.getBlockState(pos);
-            BlockEntity entity = world.getBlockEntity(pos);
+            // BlockEntity entity = world.getBlockEntity(pos);
 
             //Player & Block check
             if(player.isSneaking() && state.isOf(Blocks.BEACON)) {
@@ -77,7 +79,5 @@ public class BeaconScanner {
         }
         System.out.println("Total layers in beacon: " + radius);
         System.out.println("Beacon block type: " + blockType);
-
-
     }
 }
