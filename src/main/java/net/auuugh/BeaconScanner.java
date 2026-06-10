@@ -3,12 +3,16 @@ package net.auuugh;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.text.Text;
@@ -43,12 +47,12 @@ public class BeaconScanner {
         int xCoord;
         int zCoord;
 
-        BlockState blockType = world.getBlockState(beaconPos.down());
-        //System.out.println(blockType);
-
+        BlockState blockTypeD = world.getBlockState(beaconPos.down());
+        Identifier blockType = Registries.BLOCK.getId(blockTypeD.getBlock());
+        System.out.println(blockType);
 
         layerLoop:
-        for(int layer = 1; layer <= 4; layer++) {
+        for(int layer = 1; layer < 4; layer++) {
             //temp
             layerY = y - layer;
 
