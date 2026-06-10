@@ -69,7 +69,7 @@ public class BeaconScanner {
                     //System.out.println("Radius = " + radius);
 
                     //ends if any block found doesn't match blockType
-                    if (state.isOf(blockTypeD.getBlock())) {
+                    if (!state.isOf(blockTypeD.getBlock())) {
                         System.out.println("Non Beacon block found at " + pos + ": " + state.getBlock());
                         System.out.println("Block expected: " + blockType);
 
