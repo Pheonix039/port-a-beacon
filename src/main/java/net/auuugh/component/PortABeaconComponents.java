@@ -1,7 +1,6 @@
 package net.auuugh.component;
 
 import com.mojang.serialization.Codec;
-import net.auuugh.BeaconScanner;
 import net.auuugh.PortABeacon;
 import net.minecraft.component.ComponentType;
 import net.minecraft.registry.Registries;
@@ -14,8 +13,14 @@ public class PortABeaconComponents {
     //public static final ComponentType<PyramidSize> PYRAMID_SIZE_COMPONENT = register("pyramid_size", builder -> builder.codec(PyramidSize.CODEC));
     public static final ComponentType<Integer> PYRAMID_LAYERS = Registry.register(
             Registries.DATA_COMPONENT_TYPE,
-            Identifier.of("port-a-beacon", "pyramid_layers"),
+            Identifier.of(PortABeacon.MOD_ID, "pyramid_layers"),
             ComponentType.<Integer>builder().codec(Codec.INT).build()
+    );
+
+    public static final ComponentType<String> PYRAMID_BLOCKTYPE = Registry.register(
+            Registries.DATA_COMPONENT_TYPE,
+            Identifier.of(PortABeacon.MOD_ID, "pyramid_blocktype"),
+            ComponentType.<String>builder().codec(Codec.STRING).build()
     );
 
     private static <T>ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builderOperator) {

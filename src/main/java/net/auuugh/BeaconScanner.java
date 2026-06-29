@@ -69,8 +69,8 @@ public class BeaconScanner {
                     //System.out.println(state.getBlock());
                     //System.out.println("Radius = " + radius);
 
-                    //ends if any block found doesn't match blockType
-                    if (!state.isOf(blockTypeD.getBlock())) {
+                    //ends if any block found doesn't match blockType or isnt a beacon block tag
+                    if (!state.isOf(blockTypeD.getBlock()) || !state.isIn(BlockTags.BEACON_BASE_BLOCKS)) {
                         System.out.println("Non Beacon block found at " + pos + ": " + state.getBlock());
                         System.out.println("Block expected: " + blockType);
 
@@ -91,6 +91,6 @@ public class BeaconScanner {
 
         if (firstLayerBroken) {
             System.out.println("First layer broke, not making beacon fuk u lol");
-        } else BeaconPacking.packBeacon(player, radius);
+        } else BeaconPacking.packBeacon(player, radius, blockType);
     }
 }
