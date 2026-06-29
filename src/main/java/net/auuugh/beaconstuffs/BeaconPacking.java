@@ -38,8 +38,4 @@ public class BeaconPacking {
 
         System.out.println("Gave player beacon with " + layerCount + " layers.");
     }
-
-    public static void deleteBeacon(ServerPlayerEntity player, int layerCount) {
-        //dude
-    }
 }

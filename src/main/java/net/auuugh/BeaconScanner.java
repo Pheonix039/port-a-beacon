@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
@@ -13,26 +14,38 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.text.Text;
 
+import static net.auuugh.BeaconBuilder.pyramidBuilder;
+import static net.auuugh.component.PortABeaconComponents.PYRAMID_BLOCKTYPE;
+import static net.auuugh.component.PortABeaconComponents.PYRAMID_LAYERS;
+
 public class BeaconScanner {
     public static void register() {
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-            if(world.isClient()) return ActionResult.PASS;
+
+            if(hand != Hand.MAIN_HAND) return ActionResult.PASS;
 
             //Get block position, what type of block, and block entity data
+            ItemStack mainHandItem = player.getStackInHand(hand);
             BlockPos pos = hitResult.getBlockPos();
             BlockState state = world.getBlockState(pos);
             // BlockEntity entity = world.getBlockEntity(pos);
 
             //Player & Block check
             if(player.isSneaking() && state.isOf(Blocks.BEACON)) {
-                System.out.println("New Beacon scan at " + pos);
-                pyramidScanner(world, pos, (ServerPlayerEntity) player);
+                if (mainHandItem.isOf(Items.BEACON) && mainHandItem.getComponents().contains(PYRAMID_LAYERS) && mainHandItem.getComponents().contains(PYRAMID_BLOCKTYPE)) return ActionResult.SUCCESS;
+                if(!world.isClient()) {
+                    System.out.println("New Beacon scan at " + pos);
+                    pyramidScanner(world, pos, (ServerPlayerEntity) player);
+                }
+                return ActionResult.SUCCESS;
             }
+            if(world.isClient()) return ActionResult.PASS;
             return ActionResult.PASS;
         });
     }
@@ -48,6 +61,8 @@ public class BeaconScanner {
         int zCoord;
         boolean firstLayerBroken = false;
 
+        world.setBlockState(beaconPos, Blocks.AIR.getDefaultState());
+
         BlockState blockTypeD = world.getBlockState(beaconPos.down());
         Identifier blockType = Registries.BLOCK.getId(blockTypeD.getBlock());
         System.out.println("Block type to check for: " + blockType);
@@ -56,6 +71,7 @@ public class BeaconScanner {
         for(int layer = 1; layer <= 4; layer++) {
             //temp
             layerY = y - layer;
+            radius = layer;
 
             //main loop for checking pyramid grid
             checkBlock:
@@ -69,18 +85,22 @@ public class BeaconScanner {
                     //System.out.println(state.getBlock());
                     //System.out.println("Radius = " + radius);
 
-                    //ends if any block found doesn't match blockType or isnt a beacon block tag
-                    if (!state.isOf(blockTypeD.getBlock()) || !state.isIn(BlockTags.BEACON_BASE_BLOCKS)) {
+
+                    //ends if any block found doesn't match blockType or isn't a beacon block tag
+                    if ((!state.isOf(blockTypeD.getBlock()) || !state.isIn(BlockTags.BEACON_BASE_BLOCKS))) {
                         System.out.println("Non Beacon block found at " + pos + ": " + state.getBlock());
                         System.out.println("Block expected: " + blockType);
+                        radius--;
 
                         Text errorMsg = Text.literal("Non Beacon block found at " + pos + ": " + state.getBlock() + ". \nExpected " + blockType);
-                        player.sendMessage(errorMsg);
+                        //player.sendMessage(errorMsg);
                         if (layer == 1) {
                             firstLayerBroken = true;
+                            player.getInventory().offerOrDrop(new ItemStack(Items.BEACON));
                         }
                         break layerLoop;
                     }
+                    world.setBlockState(pos, Blocks.AIR.getDefaultState());
                     radius = layer;
                 }
             }
@@ -90,7 +110,7 @@ public class BeaconScanner {
         System.out.println("Sending to BeaconPacking.java for processing...");
 
         if (firstLayerBroken) {
-            System.out.println("First layer broke, not making beacon fuk u lol");
+            System.out.println("First layer broke, not making beacon lol");
         } else BeaconPacking.packBeacon(player, radius, blockType);
     }
 }
