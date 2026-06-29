@@ -1,5 +1,6 @@
 package net.auuugh;
 
+import net.auuugh.beaconstuffs.BeaconPacking;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -29,15 +30,14 @@ public class BeaconScanner {
 
             //Player & Block check
             if(player.isSneaking() && state.isOf(Blocks.BEACON)) {
+                System.out.println("New Beacon scan at " + pos);
                 pyramidScanner(world, pos, (ServerPlayerEntity) player);
-                System.out.println("Beacon has been right clicked at " + pos + "!");
             }
             return ActionResult.PASS;
         });
     }
 
     static void pyramidScanner(World world, BlockPos beaconPos, ServerPlayerEntity player) {
-        System.out.println("New Beacon scan at " + beaconPos);
         //vars
         int x = beaconPos.getX();
         int y = beaconPos.getY();
@@ -46,13 +46,14 @@ public class BeaconScanner {
         int layerY;
         int xCoord;
         int zCoord;
+        boolean firstLayerBroken = false;
 
         BlockState blockTypeD = world.getBlockState(beaconPos.down());
         Identifier blockType = Registries.BLOCK.getId(blockTypeD.getBlock());
-        System.out.println(blockType);
+        System.out.println("Block type to check for: " + blockType);
 
         layerLoop:
-        for(int layer = 1; layer < 4; layer++) {
+        for(int layer = 1; layer <= 4; layer++) {
             //temp
             layerY = y - layer;
 
@@ -75,6 +76,9 @@ public class BeaconScanner {
 
                         Text errorMsg = Text.literal("Non Beacon block found at " + pos + ": " + state.getBlock() + ". \nExpected " + blockType);
                         player.sendMessage(errorMsg);
+                        if (layer == 1) {
+                            firstLayerBroken = true;
+                        }
                         break layerLoop;
                     }
                     radius = layer;
@@ -83,5 +87,10 @@ public class BeaconScanner {
         }
         System.out.println("Total layers in beacon: " + radius);
         System.out.println("Beacon block type: " + blockType);
+        System.out.println("Sending to BeaconPacking.java for processing...");
+
+        if (firstLayerBroken) {
+            System.out.println("First layer broke, not making beacon fuk u lol");
+        } else BeaconPacking.packBeacon(player, radius);
     }
 }

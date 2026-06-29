@@ -1,5 +1,8 @@
 package net.auuugh;
 
+import net.auuugh.component.PortABeaconComponents;
+import net.auuugh.component.PyramidSize;
+import net.auuugh.component.PyramidBlock;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -22,5 +25,6 @@ public class PortABeacon implements ModInitializer {
 		LOGGER.info("Port a Beacon online! :D");
 
 		BeaconScanner.register();
+		PortABeaconComponents.register();
 	}
 }
