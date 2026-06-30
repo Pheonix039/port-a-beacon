@@ -26,6 +26,5 @@ public class PortABeacon implements ModInitializer {
 
 		BeaconScanner.register();
 		BeaconBuilder.register();
-		PortABeaconComponents.register();
 	}
 }
