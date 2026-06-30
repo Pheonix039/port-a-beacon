@@ -4,8 +4,11 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
@@ -13,8 +16,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import static net.auuugh.component.PortABeaconComponents.BEACON_LAYERS;
-import static net.auuugh.component.PortABeaconComponents.BEACON_BLOCKTYPE;
+import java.util.Optional;
 
 public class BeaconBuilder {
     public static void register() {
@@ -25,13 +27,23 @@ public class BeaconBuilder {
             BlockPos pos = hitResult.getBlockPos();
             BlockState state = world.getBlockState(pos);
             ItemStack mainHandItem = player.getStackInHand(hand);
+
+            NbtComponent customData = mainHandItem.get(DataComponentTypes.CUSTOM_DATA);
+            if (customData == null) {
+                return ActionResult.PASS;
+            }
+            NbtCompound nbt = customData.copyNbt();
+            String layerKey = nbt.contains("portabeacon:beacon_layers") ? "portabeacon:beacon_layers" : "beacon_layers";
+            String blocktypeKey = nbt.contains("portabeacon:beacon_blocktype") ? "portabeacon:beacon_blocktype" : "beacon_blocktype";
             //Items.BEACON.getComponents().contains(PYRAMID_LAYERS) && Items.BEACON.getComponents().contains(PYRAMID_BLOCKTYPE)
 
             //Player & Block check
-            if(mainHandItem.isOf(Items.BEACON) && mainHandItem.getComponents().contains(BEACON_LAYERS) && mainHandItem.getComponents().contains(BEACON_BLOCKTYPE) && !state.isOf(Blocks.BEACON)) {
+            if(mainHandItem.isOf(Items.BEACON) && nbt.contains(layerKey) && nbt.contains(blocktypeKey)) {
                 if(!world.isClient()) {
                     System.out.println("New Beacon build at " + pos);
-                    pyramidBuilder(world, pos, (ServerPlayerEntity) player, mainHandItem.get(BEACON_LAYERS), mainHandItem.get(BEACON_BLOCKTYPE));
+                    int buildLayers = nbt.getInt(layerKey).orElse(0);
+                    String buildBlockType = nbt.getString(blocktypeKey).orElse("minecraft:iron_block");
+                    pyramidBuilder(world, pos, (ServerPlayerEntity) player, buildLayers, buildBlockType);
                 }
 
                 if (!player.getAbilities().creativeMode) {

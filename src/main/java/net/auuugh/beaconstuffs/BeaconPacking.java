@@ -3,6 +3,8 @@ package net.auuugh.beaconstuffs;
 import net.auuugh.component.PortABeaconComponents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
+import net.minecraft.component.type.NbtComponent;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -17,13 +19,21 @@ public class BeaconPacking {
 
         //Beacon layers (tiers)
         ItemStack packedBeacon = new ItemStack(Items.BEACON);
-        packedBeacon.set(PortABeaconComponents.BEACON_LAYERS, layerCount);
+        //packedBeacon.set(PortABeaconComponents.BEACON_LAYERS, layerCount);
+
+        //New nbt system to hold data
+        NbtComponent beaconLayersNBT = packedBeacon.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT);
+        NbtCompound nbt = beaconLayersNBT.copyNbt();
+        nbt.putInt("portabeacon:beacon_layers", layerCount);
+        nbt.putString("portabeacon:beacon_blocktype", blockID.toString());
+
+        packedBeacon.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
 
         Text packedBeaconName = Text.literal("Packed Beacon").formatted(Formatting.AQUA).formatted(Formatting.BOLD);
         packedBeacon.set(DataComponentTypes.CUSTOM_NAME, packedBeaconName);
 
         //Beacon Blocktype
-        packedBeacon.set(PortABeaconComponents.BEACON_BLOCKTYPE, blockID.toString());
+        //packedBeacon.set(PortABeaconComponents.BEACON_BLOCKTYPE, blockID.toString());
 
         Text packedBeaconLayers = Text.literal("Tiers: ").formatted(Formatting.DARK_AQUA).append(Text.of(String.valueOf(layerCount).formatted(Formatting.AQUA)));
 

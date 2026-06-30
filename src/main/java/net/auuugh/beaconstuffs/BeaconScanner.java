@@ -14,9 +14,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import static net.auuugh.component.PortABeaconComponents.BEACON_BLOCKTYPE;
-import static net.auuugh.component.PortABeaconComponents.BEACON_LAYERS;
-
 public class BeaconScanner {
     public static void register() {
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
@@ -31,7 +28,7 @@ public class BeaconScanner {
 
             //Player & Block check
             if(player.isSneaking() && state.isOf(Blocks.BEACON)) {
-                if (mainHandItem.isOf(Items.BEACON) && mainHandItem.getComponents().contains(BEACON_LAYERS) && mainHandItem.getComponents().contains(BEACON_BLOCKTYPE)) return ActionResult.SUCCESS;
+                if (mainHandItem.isOf(Items.BEACON)) return ActionResult.SUCCESS;
                 if(!world.isClient()) {
                     System.out.println("New Beacon scan at " + pos);
                     pyramidScanner(world, pos, (ServerPlayerEntity) player);
