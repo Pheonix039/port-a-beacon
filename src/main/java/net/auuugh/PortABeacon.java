@@ -2,7 +2,6 @@ package net.auuugh;
 
 import net.auuugh.beaconstuffs.BeaconBuilder;
 import net.auuugh.beaconstuffs.BeaconScanner;
-import net.auuugh.component.PortABeaconComponents;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
