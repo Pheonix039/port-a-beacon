@@ -4,13 +4,9 @@ import net.auuugh.beaconstuffs.BeaconPacking;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
@@ -18,11 +14,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.text.Text;
 
-import static net.auuugh.BeaconBuilder.pyramidBuilder;
-import static net.auuugh.component.PortABeaconComponents.PYRAMID_BLOCKTYPE;
-import static net.auuugh.component.PortABeaconComponents.PYRAMID_LAYERS;
+import static net.auuugh.component.PortABeaconComponents.BEACON_BLOCKTYPE;
+import static net.auuugh.component.PortABeaconComponents.BEACON_LAYERS;
 
 public class BeaconScanner {
     public static void register() {
@@ -38,7 +32,7 @@ public class BeaconScanner {
 
             //Player & Block check
             if(player.isSneaking() && state.isOf(Blocks.BEACON)) {
-                if (mainHandItem.isOf(Items.BEACON) && mainHandItem.getComponents().contains(PYRAMID_LAYERS) && mainHandItem.getComponents().contains(PYRAMID_BLOCKTYPE)) return ActionResult.SUCCESS;
+                if (mainHandItem.isOf(Items.BEACON) && mainHandItem.getComponents().contains(BEACON_LAYERS) && mainHandItem.getComponents().contains(BEACON_BLOCKTYPE)) return ActionResult.SUCCESS;
                 if(!world.isClient()) {
                     System.out.println("New Beacon scan at " + pos);
                     pyramidScanner(world, pos, (ServerPlayerEntity) player);

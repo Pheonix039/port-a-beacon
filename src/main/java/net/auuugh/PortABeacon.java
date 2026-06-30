@@ -5,6 +5,10 @@ import net.auuugh.component.PyramidSize;
 import net.auuugh.component.PyramidBlock;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
+import net.fabricmc.fabric.api.event.registry.RegistryAttributeHolder;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

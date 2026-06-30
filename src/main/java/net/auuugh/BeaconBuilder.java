@@ -1,6 +1,5 @@
 package net.auuugh;
 
-import net.auuugh.beaconstuffs.BeaconPacking;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -8,18 +7,14 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.auuugh.component.PortABeaconComponents;
 
-import static net.auuugh.component.PortABeaconComponents.PYRAMID_LAYERS;
-import static net.auuugh.component.PortABeaconComponents.PYRAMID_BLOCKTYPE;
+import static net.auuugh.component.PortABeaconComponents.BEACON_LAYERS;
+import static net.auuugh.component.PortABeaconComponents.BEACON_BLOCKTYPE;
 
 public class BeaconBuilder {
     public static void register() {
@@ -33,10 +28,10 @@ public class BeaconBuilder {
             //Items.BEACON.getComponents().contains(PYRAMID_LAYERS) && Items.BEACON.getComponents().contains(PYRAMID_BLOCKTYPE)
 
             //Player & Block check
-            if(mainHandItem.isOf(Items.BEACON) && mainHandItem.getComponents().contains(PYRAMID_LAYERS) && mainHandItem.getComponents().contains(PYRAMID_BLOCKTYPE) && !state.isOf(Blocks.BEACON)) {
+            if(mainHandItem.isOf(Items.BEACON) && mainHandItem.getComponents().contains(BEACON_LAYERS) && mainHandItem.getComponents().contains(BEACON_BLOCKTYPE) && !state.isOf(Blocks.BEACON)) {
                 if(!world.isClient()) {
                     System.out.println("New Beacon build at " + pos);
-                    pyramidBuilder(world, pos, (ServerPlayerEntity) player, mainHandItem.get(PYRAMID_LAYERS), mainHandItem.get(PYRAMID_BLOCKTYPE));
+                    pyramidBuilder(world, pos, (ServerPlayerEntity) player, mainHandItem.get(BEACON_LAYERS), mainHandItem.get(BEACON_BLOCKTYPE));
                 }
 
                 if (!player.getAbilities().creativeMode) {

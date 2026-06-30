@@ -11,15 +11,15 @@ import java.util.function.UnaryOperator;
 
 public class PortABeaconComponents {
     //public static final ComponentType<PyramidSize> PYRAMID_SIZE_COMPONENT = register("pyramid_size", builder -> builder.codec(PyramidSize.CODEC));
-    public static final ComponentType<Integer> PYRAMID_LAYERS = Registry.register(
+    public static final ComponentType<Integer> BEACON_LAYERS = Registry.register(
             Registries.DATA_COMPONENT_TYPE,
-            Identifier.of(PortABeacon.MOD_ID, "pyramid_layers"),
+            Identifier.of(PortABeacon.MOD_ID, "beacon_layers"),
             ComponentType.<Integer>builder().codec(Codec.INT).build()
     );
 
-    public static final ComponentType<String> PYRAMID_BLOCKTYPE = Registry.register(
+    public static final ComponentType<String> BEACON_BLOCKTYPE = Registry.register(
             Registries.DATA_COMPONENT_TYPE,
-            Identifier.of(PortABeacon.MOD_ID, "pyramid_blocktype"),
+            Identifier.of(PortABeacon.MOD_ID, "beacon_blocktype"),
             ComponentType.<String>builder().codec(Codec.STRING).build()
     );
 

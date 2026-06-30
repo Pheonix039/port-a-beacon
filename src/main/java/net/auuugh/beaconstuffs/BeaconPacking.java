@@ -10,23 +10,19 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 public class BeaconPacking {
     public static void packBeacon(ServerPlayerEntity player, int layerCount, Identifier blockID) {
-        // I don't think ive gotten this far in tutorials
-        // Maybe use custom components to store pyramid level and block type?
-
-        //Pyramid layers (tiers)
+        //Beacon layers (tiers)
         ItemStack packedBeacon = new ItemStack(Items.BEACON);
-        packedBeacon.set(PortABeaconComponents.PYRAMID_LAYERS, layerCount);
+        packedBeacon.set(PortABeaconComponents.BEACON_LAYERS, layerCount);
 
         Text packedBeaconName = Text.literal("Packed Beacon").formatted(Formatting.AQUA).formatted(Formatting.BOLD);
         packedBeacon.set(DataComponentTypes.CUSTOM_NAME, packedBeaconName);
 
-        //Pyramid Blocktype
-        packedBeacon.set(PortABeaconComponents.PYRAMID_BLOCKTYPE, blockID.toString());
+        //Beacon Blocktype
+        packedBeacon.set(PortABeaconComponents.BEACON_BLOCKTYPE, blockID.toString());
 
         Text packedBeaconLayers = Text.literal("Tiers: ").formatted(Formatting.DARK_AQUA).append(Text.of(String.valueOf(layerCount).formatted(Formatting.AQUA)));
 
