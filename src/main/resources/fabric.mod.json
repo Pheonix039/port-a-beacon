@@ -2,14 +2,14 @@
 	"schemaVersion": 1,
 	"id": "port-a-beacon",
 	"version": "${version}",
-	"name": "port a beacon",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Port-A-Beacon",
+	"description": "Beacon transportation and rebuilding made easy!",
 	"authors": [
-		"Me!"
+		"Pheonix039"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/Pheonix039/port-a-beacon"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/port-a-beacon/icon.png",
