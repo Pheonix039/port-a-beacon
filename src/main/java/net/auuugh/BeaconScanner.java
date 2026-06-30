@@ -65,7 +65,7 @@ public class BeaconScanner {
 
         BlockState blockTypeD = world.getBlockState(beaconPos.down());
         Identifier blockType = Registries.BLOCK.getId(blockTypeD.getBlock());
-        System.out.println("Block type to check for: " + blockType);
+        //System.out.println("Block type to check for: " + blockType);
 
         layerLoop:
         for(int layer = 1; layer <= 4; layer++) {
@@ -88,11 +88,11 @@ public class BeaconScanner {
 
                     //ends if any block found doesn't match blockType or isn't a beacon block tag
                     if ((!state.isOf(blockTypeD.getBlock()) || !state.isIn(BlockTags.BEACON_BASE_BLOCKS))) {
-                        System.out.println("Non Beacon block found at " + pos + ": " + state.getBlock());
-                        System.out.println("Block expected: " + blockType);
+                        //System.out.println("Non Beacon block found at " + pos + ": " + state.getBlock());
+                        //System.out.println("Block expected: " + blockType);
                         radius--;
 
-                        Text errorMsg = Text.literal("Non Beacon block found at " + pos + ": " + state.getBlock() + ". \nExpected " + blockType);
+                        //Text errorMsg = Text.literal("Non Beacon block found at " + pos + ": " + state.getBlock() + ". \nExpected " + blockType);
                         //player.sendMessage(errorMsg);
                         if (layer == 1) {
                             firstLayerBroken = true;
@@ -105,12 +105,12 @@ public class BeaconScanner {
                 }
             }
         }
-        System.out.println("Total layers in beacon: " + radius);
-        System.out.println("Beacon block type: " + blockType);
-        System.out.println("Sending to BeaconPacking.java for processing...");
+        //System.out.println("Total layers in beacon: " + radius);
+        //System.out.println("Beacon block type: " + blockType);
+        //System.out.println("Sending to BeaconPacking.java for processing...");
 
         if (firstLayerBroken) {
-            System.out.println("First layer broke, not making beacon lol");
+            //System.out.println("First layer broke, not making beacon lol");
         } else BeaconPacking.packBeacon(player, radius, blockType);
     }
 }

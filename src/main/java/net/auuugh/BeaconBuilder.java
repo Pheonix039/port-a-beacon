@@ -72,7 +72,7 @@ public class BeaconBuilder {
             radius = layer;
 
             world.setBlockState(newBeaconSpot, Blocks.BEACON.getDefaultState());
-            System.out.println("newBeaconSpot " + newBeaconSpot);
+            //System.out.println("newBeaconSpot " + newBeaconSpot);
             //main loop for checking pyramid grid
             checkBlock:
             for (int checkx = -radius; checkx <= radius; checkx++) {
