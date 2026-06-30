@@ -1,6 +1,5 @@
-package net.auuugh;
+package net.auuugh.beaconstuffs;
 
-import net.auuugh.beaconstuffs.BeaconPacking;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

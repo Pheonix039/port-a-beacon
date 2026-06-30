@@ -14,6 +14,7 @@ import java.util.List;
 
 public class BeaconPacking {
     public static void packBeacon(ServerPlayerEntity player, int layerCount, Identifier blockID) {
+
         //Beacon layers (tiers)
         ItemStack packedBeacon = new ItemStack(Items.BEACON);
         packedBeacon.set(PortABeaconComponents.BEACON_LAYERS, layerCount);
