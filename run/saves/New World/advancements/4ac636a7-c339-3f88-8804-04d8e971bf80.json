@@ -1,0 +1,33 @@
+{
+  "minecraft:nether/create_beacon": {
+    "criteria": {
+      "beacon": "2026-07-01 11:12:30 -0500"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/diamond": {
+    "criteria": {
+      "has_diamond_block": "2026-07-01 11:11:57 -0500"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/crafting_table": {
+    "criteria": {
+      "unlock_right_away": "2026-07-01 11:11:40 -0500"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:plains": "2026-07-01 11:11:41 -0500"
+    },
+    "done": false
+  },
+  "minecraft:nether/create_full_beacon": {
+    "criteria": {
+      "beacon": "2026-07-01 11:14:46 -0500"
+    },
+    "done": true
+  },
+  "DataVersion": 3955
+}
