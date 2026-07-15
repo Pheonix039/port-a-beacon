@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"id": "port-a-beacon",
+	"version": "${version}",
+	"name": "Port-A-Beacon",
+	"description": "Beacon transportation and rebuilding made easy!",
+	"authors": [
+		"Pheonix039"
+	],
+	"contact": {
+		"homepage": "https://modrinth.com/mod/port-a-beacon",
+		"sources": "https://github.com/Pheonix039/port-a-beacon"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/port-a-beacon/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.auuugh.PortABeacon"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.18.6",
+		"minecraft": [
+			"26.1",
+			"26.1.1",
+			"26.1.2",
+			"26.2"
+		],
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
